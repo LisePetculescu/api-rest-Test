@@ -5,10 +5,13 @@ window.addEventListener("load", start);
 const jsonData =
   "https://my-first-project-708c7-default-rtdb.europe-west1.firebasedatabase.app/";
 
-function start() {
+async function start() {
   console.log("start is starting...");
 
-  getPosts();
+  const posts = await getPosts();
+  for (const post of posts) {
+    showPost(post);
+  }
 }
 
 async function getPosts() {
@@ -32,5 +35,17 @@ function preparePostData(dataObject) {
     anArray.push(post);
   }
   console.log("Array: " + anArray);
+
   return anArray;
+}
+
+function showPost(post) {
+  document.querySelector("#grid-container").insertAdjacentHTML(
+    "beforeend",
+    /*HTML*/ `
+<article class="grid-item">
+<img src="${post.image}">
+<h2>${post.title}</h2>
+</article>`
+  );
 }
