@@ -1,4 +1,4 @@
-#grid-container {
+#posts-container, #users-container {
   display: grid;
   grid-template-columns: 1fr;
   column-gap: 1.2vw;
@@ -8,25 +8,25 @@
 }
 
 @media (min-width: 400px) {
-  #grid-container {
+  #posts-container, #users-container {
     grid-template-columns: 1fr 1fr;
   }
 }
 
 @media (min-width: 650px) {
-  #grid-container {
+ #posts-container, #users-container {
     grid-template-columns: 1fr 1fr 1fr;
   }
 }
 
 @media (min-width: 992px) {
-  #grid-container {
+ #posts-container, #users-container {
     grid-template-columns: 1fr 1fr 1fr 1fr;
   }
 }
 
 @media (min-width: 1300px) {
-  #grid-container {
+ #posts-container, #users-container {
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   }
 }

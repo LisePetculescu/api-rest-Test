@@ -5,20 +5,16 @@ window.addEventListener("load", start);
 const jsonData2 =
   "https://try-out-new-data-structure-default-rtdb.firebaseio.com/";
 
-
 async function start() {
   console.log("start2 is starting...");
 
-  const posts = await getPosts();
-  for (const post of posts) {
-    showPost(post);
-  }
-  const users = await getUsers();
-   for (const user of users) {
-     showUser(user);
-   }
-  //   createPost("my title", "img", "hello world");
+  await updatePostGrid();
+  await updateUserGrid();
+
+  // createPost("my title", "https://scontent-cph2-1.xx.fbcdn.net/v/t39.30808-6/341831548_625878382792660_2197200488603256330_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=730e14&_nc_ohc=GB6Ke2F8JI4AX_mHgj8&_nc_ht=scontent-cph2-1.xx&oh=00_AfClqOMRmwKs5wTn65vuRb6fPIOKcuWtazWck3ZNH9W9-A&oe=6443F1A0", "hello world");
 }
+
+// ---------- posts ----------- //
 
 async function getPosts() {
   const response = await fetch(`${jsonData2}/posts.json`);
@@ -29,14 +25,6 @@ async function getPosts() {
   const posts = preparePostData(data);
   console.log(posts);
   return posts;
-}
-
-async function getUsers() {
-  const response = await fetch(`${jsonData2}/users.json`);
-  const data = await response.json();
-
-  const users = prepareUserData(data);
-  return users;
 }
 
 function preparePostData(dataObject) {
@@ -53,6 +41,106 @@ function preparePostData(dataObject) {
   return anArray;
 }
 
+function showPost(post) {
+  document.querySelector("#posts-container").insertAdjacentHTML(
+    "beforeend",
+    /*HTML*/ `
+<article class="grid-item">
+<img src="${post.image}">
+<h2>${post.title}</h2>
+<p>${post.uid}</p>
+<p>${post.body}</p>
+<button class="btn-delete">Delete</button>
+<button class="btn-update">Update</button>
+</article>`
+  );
+
+  document
+    .querySelector("#posts-container article:last-child .btn-delete")
+    .addEventListener("click", deleteClicked);
+  document
+    .querySelector("#posts-container article:last-child .btn-update")
+    .addEventListener("click", updateClicked);
+
+  function deleteClicked() {
+    deletePost(post.id);
+    console.log("delete post clicked");
+  }
+
+  function updateClicked() {
+    console.log("update post clicked");
+    const title = `Updated: ${post.title}`;
+    const body = `Updated: ${post.body}`;
+    const image = `${post.image}`;
+    updatePost(post.id, title, body, image);
+  }
+}
+
+async function updatePostGrid() {
+  const posts = await getPosts();
+
+  document.querySelector("#posts-container").innerHTML = "";
+
+  for (const post of posts) {
+    showPost(post);
+  }
+}
+
+async function deletePost(id) {
+  const response = await fetch(`${jsonData2}/posts/${id}.json`, {
+    method: "DELETE",
+  });
+  if (response.ok) {
+    console.log("post deleted succesfully from database");
+    updatePostGrid();
+  } else {
+    console.log("something went wrong when trying to delete the post :(");
+  }
+}
+
+async function updatePost(id, title, body, image) {
+  const postToUpdate = { title, body, image };
+  const json = JSON.stringify(postToUpdate);
+  const response = await fetch(`${jsonData2}/posts/${id}.json`, {
+    method: "PUT",
+    body: json,
+  });
+
+  if (response.ok) {
+    console.log("post succesfully updated in the database");
+    updatePostGrid();
+  }
+}
+
+async function createPost(title, image, body, uid) {
+  const newPost = {
+    title: title,
+    image: image,
+    body: body,
+    uid: uid,
+  };
+  console.log(newPost);
+  const postAsJson = JSON.stringify(newPost);
+
+  const response = await fetch(`${jsonData}/posts.json`, {
+    method: "POST",
+    body: postAsJson,
+  });
+  console.log(response);
+  const data = await response.json();
+  console.log(data);
+}
+
+// ------------ user --------------- //
+
+async function getUsers() {
+  const response = await fetch(`${jsonData2}/users.json`);
+  const data = await response.json();
+
+  const users = prepareUserData(data);
+  return users;
+}
+
 function prepareUserData(dataObject) {
   const anArray = [];
 
@@ -67,48 +155,79 @@ function prepareUserData(dataObject) {
   return anArray;
 }
 
-function showPost(post) {
-  document.querySelector("#grid-container").insertAdjacentHTML(
+function showUser(user) {
+  document.querySelector("#users-container").insertAdjacentHTML(
     "beforeend",
     /*HTML*/ `
-<article class="grid-item">
-<img src="${post.image}">
-<h2>${post.title}</h2>
-<p>${post.uid}</p>
-<p>${post.body}</p>
-</article>`
-  );
-}
-
-function showUser(user) {
-      document.querySelector("#grid-container").insertAdjacentHTML(
-        "beforeend",
-        /*HTML*/ `
 <article class="grid-item">
 <img src="${user.image}">
 <p>${user.name}</p>
 <h2>${user.title}</h2>
 <p>${user.phone}</p>
 <p>${user.mail}</p>
+<button class="btn-delete">Delete</button>
+<button class="btn-update">Update</button>
 </article>`
-      );
+  );
+
+  document
+    .querySelector("#users-container article:last-child .btn-update")
+    .addEventListener("click", updateClicked);
+  document
+    .querySelector("#users-container article:last-child .btn-delete")
+    .addEventListener("click", deleteClicked);
+
+  function deleteClicked() {
+    console.log("delete user clicked");
+    deleteUser(user.id);
+  }
+
+  function updateClicked() {
+    console.log("update user clicked");
+    const img = `${user.image}`;
+    const name = `Updated: ${user.name}`;
+    const title = `Updated: ${user.title}`;
+    const phone = `Updated: ${user.phone}`;
+    const mail = `Updated: ${user.mail}`;
+
+    updateUser(user.id, img, name, title, phone, mail);
+  }
 }
 
-async function createPost(title, image, body, uid) {
-  const newPost = {
-    title: title,
-    image: image,
-    body: body,
-    uid: uid
-  };
-  console.log(newPost);
-  const postAsJson = JSON.stringify(newPost);
+async function updateUserGrid() {
+  const users = await getUsers();
 
-  const response = await fetch(`${jsonData}/posts.json`, {
-    method: "POST",
-    body: postAsJson,
+  document.querySelector("#users-container").innerHTML = "";
+
+  for (const user of users) {
+    showUser(user);
+  }
+}
+
+async function deleteUser(id) {
+  const response = await fetch(`${jsonData2}/users/${id}.json`, {
+    method: "DELETE",
   });
-  console.log(response);
-  const data = await response.json();
-  console.log(data);
+  if (response.ok) {
+    console.log("user deleted succesfully");
+    updateUserGrid();
+  } else {
+    console.log("oh no.. something went wrong when trying to delete user :(");
+  }
+}
+
+async function updateUser(id, img, name, title, phone, mail) {
+  const userToUpdate = { img, name, title, phone, mail };
+  const json = JSON.stringify(userToUpdate);
+  const response = await fetch(`${jsonData2}/users/${id}.json`, {
+    method: "PUT",
+    body: json,
+  });
+
+  if (response.ok) {
+    console.log("user updated succesfully in the database");
+    updateUserGrid();
+  } else {
+    console.log("something went wrong when trying to update user :(");
+  }
 }
