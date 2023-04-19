@@ -58,3 +58,7 @@ body {
   margin: 0vw;
   background-color: #f3f3f3;
 }
+
+button {
+  background-color: rgb(237, 144, 159);
+}
