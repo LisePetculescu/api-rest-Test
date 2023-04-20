@@ -91,6 +91,11 @@ async function updatePostGrid() {
 
 function createPostClicked() {
   const number = Math.floor(Math.random() * 100 + 1);
+  // let newNumber = 0;
+  // newNumber = newNumber+1;
+  // for (let i = 0; i < 100; i++) {
+  //   console.log(i);
+  // }
   const image =
     "https://scontent-cph2-1.xx.fbcdn.net/v/t39.30808-6/341831548_625878382792660_2197200488603256330_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=730e14&_nc_ohc=GB6Ke2F8JI4AX_mHgj8&_nc_ht=scontent-cph2-1.xx&oh=00_AfClqOMRmwKs5wTn65vuRb6fPIOKcuWtazWck3ZNH9W9-A&oe=6443F1A0";
   const title = `New post ${number}`;
@@ -128,6 +133,10 @@ async function createPost(image, title, uid, body) {
   }
   // const data = await response.json();
   // console.log(data);
+
+  // document
+  //   .querySelector("#posts-container")
+  //   .insertAdjacentHTML("beforebegin", ????);
 }
 
 async function deletePost(id) {
