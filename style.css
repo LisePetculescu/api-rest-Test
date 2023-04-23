@@ -1,4 +1,5 @@
-#posts-container, #users-container {
+#posts-container,
+#users-container {
   display: grid;
   grid-template-columns: 1fr;
   column-gap: 1.2vw;
@@ -8,32 +9,31 @@
 }
 
 @media (min-width: 400px) {
-  #posts-container, #users-container {
+  #posts-container,
+  #users-container {
     grid-template-columns: 1fr 1fr;
   }
 }
 
 @media (min-width: 650px) {
- #posts-container, #users-container {
+  #posts-container,
+  #users-container {
     grid-template-columns: 1fr 1fr 1fr;
   }
 }
 
 @media (min-width: 992px) {
- #posts-container, #users-container {
+  #posts-container,
+  #users-container {
     grid-template-columns: 1fr 1fr 1fr 1fr;
   }
 }
 
 @media (min-width: 1300px) {
- #posts-container, #users-container {
+  #posts-container,
+  #users-container {
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   }
-}
-
-img {
-  max-width: 200px;
-  max-height: 500px;
 }
 
 #dialogPost {
@@ -42,7 +42,7 @@ img {
 
 .grid-item img {
   width: 100%;
-  border-radius: 4vw;
+  border-radius: 2vw;
 }
 .grid-item {
   position: relative;
@@ -79,6 +79,7 @@ body {
   background-color: #f3f3f3;
 }
 
-button, #btn-submit {
+button,
+#btn-submit {
   background-color: rgb(237, 144, 159);
 }
