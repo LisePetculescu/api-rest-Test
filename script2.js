@@ -14,7 +14,6 @@ async function start() {
   document
     .querySelector("#btn-create-post")
     .addEventListener("click", createPostClicked);
-  // createPost("my title", "https://scontent-cph2-1.xx.fbcdn.net/v/t39.30808-6/341831548_625878382792660_2197200488603256330_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=730e14&_nc_ohc=GB6Ke2F8JI4AX_mHgj8&_nc_ht=scontent-cph2-1.xx&oh=00_AfClqOMRmwKs5wTn65vuRb6fPIOKcuWtazWck3ZNH9W9-A&oe=6443F1A0", "hello world");
 }
 
 // ---------- posts ----------- //
@@ -89,18 +88,59 @@ async function updatePostGrid() {
   }
 }
 
+
+
+
 function createPostClicked() {
-  const number = Math.floor(Math.random() * 100 + 1);
-  // let newNumber = 0;
-  // newNumber = newNumber+1;
-  // for (let i = 0; i < 100; i++) {
-  //   console.log(i);
-  // }
-  const image =
-    "https://scontent-cph2-1.xx.fbcdn.net/v/t39.30808-6/341831548_625878382792660_2197200488603256330_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=730e14&_nc_ohc=GB6Ke2F8JI4AX_mHgj8&_nc_ht=scontent-cph2-1.xx&oh=00_AfClqOMRmwKs5wTn65vuRb6fPIOKcuWtazWck3ZNH9W9-A&oe=6443F1A0";
-  const title = `New post ${number}`;
-  const uid = ``;
-  const body = `Hello world, this is a new post`;
+  console.log("create post clicked");
+  const newPost = (document.querySelector("#dialogPost").innerHTML = /*HTML*/ `
+ <form action="" method=dialog" id="createNewPost">
+      <label for="postTitle">Title:</label>
+      <input type="text" id="postTitle" name="postTitle" />
+      <br />
+      <label for="postBody">Description:</label>
+      <input type="text" id="postBody" name="postBody" />
+      <br />
+      <label for="postImage">Image (URL):</label>
+      <input type="url" id="postImage" name="postImage" />
+      <br />
+      <br />
+      <input type="submit" id="btn-submit" value="Post" />
+      <button id="btn-back">Back</button>
+    </form> 
+    `);
+  document.querySelector("#dialogPost").showModal();
+  document.querySelector("#btn-back").addEventListener("click", closePostModal);
+
+  clickPost(newPost);
+}
+
+function closePostModal(event) {
+  event.preventDefault();
+  document.querySelector("#dialogPost").close();
+}
+
+function clickPost() {
+  document
+    .querySelector("#createNewPost")
+    .addEventListener("submit", createPostNew);
+}
+
+
+function createPostNew(event) {
+  console.log("'Post' clicked");
+  event.preventDefault();
+
+  const image = document
+    .querySelector("#createNewPost")
+    .elements.namedItem("postImage").value;
+  const title = document
+    .querySelector("#createNewPost")
+    .elements.namedItem("postTitle").value;
+  const body = document
+    .querySelector("#createNewPost")
+    .elements.namedItem("postBody").value;
+  const uid = Math.floor(Math.random() * 100 + 1);
 
   createPost(image, title, uid, body);
 }
@@ -111,10 +151,6 @@ async function createPost(image, title, uid, body) {
     title,
     uid,
     body,
-    // title: title,
-    // image: image,
-    // body: body,
-    // uid: uid,
   };
   console.log(newPost);
   const json = JSON.stringify(newPost);
@@ -128,15 +164,10 @@ async function createPost(image, title, uid, body) {
   if (response.ok) {
     console.log("new post has been created - YAY!");
     updatePostGrid();
+    document.querySelector("#dialogPost").close();
   } else {
     console.log("oh no.. couldn't create a new post :(");
   }
-  // const data = await response.json();
-  // console.log(data);
-
-  // document
-  //   .querySelector("#posts-container")
-  //   .insertAdjacentHTML("beforebegin", ????);
 }
 
 async function deletePost(id) {
