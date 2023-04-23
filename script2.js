@@ -88,9 +88,6 @@ async function updatePostGrid() {
   }
 }
 
-
-
-
 function createPostClicked() {
   console.log("create post clicked");
   const newPost = (document.querySelector("#dialogPost").innerHTML = /*HTML*/ `
@@ -125,7 +122,6 @@ function clickPost() {
     .querySelector("#createNewPost")
     .addEventListener("submit", createPostNew);
 }
-
 
 function createPostNew(event) {
   console.log("'Post' clicked");
