@@ -80,6 +80,12 @@ body {
 }
 
 button,
-#btn-submit {
+#btn-submit,
+#btn-cancel {
   background-color: rgb(237, 144, 159);
+}
+
+#btn-yes,
+.btn-delete {
+  background-color: #f3f3f3;
 }

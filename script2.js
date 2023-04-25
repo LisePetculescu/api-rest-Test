@@ -39,7 +39,7 @@ function preparePostData(dataObject) {
     console.log(post);
     anArray.push(post);
   }
-  console.log("Array: " + anArray);
+  // console.log("Array: " + anArray);
 
   return anArray;
 }
@@ -66,17 +66,98 @@ function showPost(post) {
     .addEventListener("click", updateClicked);
 
   function deleteClicked() {
-    deletePost(post.id);
     console.log("delete post clicked");
+    document.querySelector("#dialog-delete-post").innerHTML = /*HTML*/ `
+      <h2>Do you want to delete this post?</h2> 
+      <br />
+      <p>${post.title}</p>
+      <br />
+      <br />
+    <form action="" method=dialog" id="delete-post">
+      <input type="button" id="btn-cancel" value="NO"/>
+      <button id="btn-yes">YES</button>
+    </form> 
+    `;
+    document.querySelector("#dialog-delete-post").showModal();
+    document
+      .querySelector("#btn-yes")
+      .addEventListener("click", deletePostClicked);
+    document
+      .querySelector("#btn-cancel")
+      .addEventListener("click", cancelDelete);
+  }
+
+  function deletePostClicked(event) {
+    console.log(`delete yes clicked`);
+    event.preventDefault();
+    deletePost(post.id);
   }
 
   function updateClicked() {
     console.log("update post clicked");
-    const title = `Updated: ${post.title}`;
-    const body = `Updated: ${post.body}`;
-    const image = `${post.image}`;
-    updatePost(post.id, title, body, image);
+    document.querySelector("#dialog-update-post").innerHTML = /*HTML*/ `
+      <h2>Update post:</h2> 
+      <p>${post.title}</p>
+      <br />
+      <br />
+    <form action="" method=dialog" id="form-update-post">
+    <label for="title-update">Title:</label>
+    <input type="text" id="title-update" name="title-update" 
+    placeholder="Type a new title" />
+    <br />
+    <label for="body-update">Desciption:</label>
+    <input type="text" id="body-update" name="body-update" 
+    placeholder="Type a new desciption" />
+    <br />
+    <label for="image-update">Image (URL):</label>
+    <input type="url" id="image-update" name="image-update" 
+    placeholder="Add a new image" />
+    <br />
+    <br />
+      <input type="button" id="btn-no-update" value="CANCEL"/>
+      <button id="btn-yes-update">UPDATE</button>
+    </form> 
+    `;
+
+    document.querySelector("#dialog-update-post").showModal();
+
+    document
+      .querySelector("#btn-no-update")
+      .addEventListener("click", cancelUpdate);
+    document
+      .querySelector("#btn-yes-update")
+      .addEventListener("click", updateClickedNew);
+    // const title = `Updated: ${post.title}`;
+    // const body = `Updated: ${post.body}`;
+    // const image = `${post.image}`;
+    // updatePost(post.id, title, body, image);
   }
+
+  function updateClickedNew(event) {
+    event.preventDefault();
+
+    const image = document
+      .querySelector("#form-update-post")
+      .elements.namedItem("image-update").value;
+    const title = document
+      .querySelector("#form-update-post")
+      .elements.namedItem("title-update").value;
+    const body = document
+      .querySelector("#form-update-post")
+      .elements.namedItem("body-update").value;
+    const uid = post.uid;
+
+    updatePost(post.id, image, title, uid, body);
+    document.querySelector("#dialog-update-post").close();
+  }
+}
+
+function cancelUpdate() {
+  document.querySelector("#dialog-update-post").close();
+}
+
+function cancelDelete() {
+  document.querySelector("#dialog-delete-post").close();
 }
 
 async function updatePostGrid() {
@@ -91,7 +172,9 @@ async function updatePostGrid() {
 
 function createPostClicked() {
   console.log("create post clicked");
-  const newPost = (document.querySelector("#dialogPost").innerHTML = /*HTML*/ `
+  const newPost = (document.querySelector(
+    "#dialog-create-post"
+  ).innerHTML = /*HTML*/ `
  <form action="" method=dialog" id="createNewPost">
       <label for="postTitle">Title:</label>
       <input type="text" id="postTitle" name="postTitle" />
@@ -107,7 +190,7 @@ function createPostClicked() {
       <button id="btn-back">Back</button>
     </form> 
     `);
-  document.querySelector("#dialogPost").showModal();
+  document.querySelector("#dialog-create-post").showModal();
   document.querySelector("#btn-back").addEventListener("click", closePostModal);
 
   clickPost(newPost);
@@ -115,7 +198,7 @@ function createPostClicked() {
 
 function closePostModal(event) {
   event.preventDefault();
-  document.querySelector("#dialogPost").close();
+  document.querySelector("#dialog-create-post").close();
 }
 
 function clickPost() {
@@ -161,7 +244,7 @@ async function createPost(image, title, uid, body) {
   if (response.ok) {
     console.log("new post has been created - YAY!");
     updatePostGrid();
-    document.querySelector("#dialogPost").close();
+    document.querySelector("#dialog-create-post").close();
   } else {
     console.log("oh no.. couldn't create a new post :(");
   }
@@ -173,14 +256,15 @@ async function deletePost(id) {
   });
   if (response.ok) {
     console.log("post deleted succesfully from database");
+    document.querySelector("#dialog-delete-post").close();
     updatePostGrid();
   } else {
     console.log("something went wrong when trying to delete the post :(");
   }
 }
 
-async function updatePost(id, title, body, image) {
-  const postToUpdate = { title, body, image };
+async function updatePost(id, image, title, uid, body) {
+  const postToUpdate = { title, body, uid, image };
   const json = JSON.stringify(postToUpdate);
   const response = await fetch(`${jsonData2}/posts/${id}.json`, {
     method: "PUT",
