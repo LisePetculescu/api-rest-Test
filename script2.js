@@ -6,6 +6,8 @@ window.addEventListener("load", start);
 const jsonData2 =
   "https://try-out-new-data-structure-default-rtdb.firebaseio.com/";
 
+let postz = [];
+
 async function start() {
   console.log("start2 is starting...");
 
@@ -15,6 +17,13 @@ async function start() {
   document
     .querySelector("#btn-create-post")
     .addEventListener("click", createPostClicked);
+
+  document
+    .querySelector("#title-search")
+    .addEventListener("keyup", inputSearchChanged);
+  document
+    .querySelector("#title-search")
+    .addEventListener("search", inputSearchChanged);
 }
 
 // ---------- posts ----------- //
@@ -27,6 +36,7 @@ async function getPosts() {
 
   const posts = preparePostData(data);
   console.log(posts);
+  postz = posts;
   return posts;
 }
 
@@ -376,4 +386,25 @@ async function updateUser(id, image, name, title, phone, mail) {
   } else {
     console.log("something went wrong when trying to update user :(");
   }
+}
+
+function inputSearchChanged(event) {
+  const value = event.target.value;
+  const postsToShow = searchPosts(value);
+  showPost(postsToShow);
+  console.log(value);
+  console.log(postsToShow);
+}
+
+function searchPosts(searchValue) {
+  searchValue = searchValue.toLowerCase();
+  const results = postz.filter(checkTitle);
+  // lav posts som let variabel i starten og gem i den fir at få det frem eller nesting
+  // lav ny func showPosts() som ikke bruger insertAdjecentHTML
+
+  function checkTitle(post) {
+    const title = post.title.toLowerCase();
+    return title.includes(searchValue);
+  }
+  return results;
 }
