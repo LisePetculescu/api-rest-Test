@@ -1,4 +1,5 @@
 "use strict";
+console.log("js is on");
 
 window.addEventListener("load", start);
 
