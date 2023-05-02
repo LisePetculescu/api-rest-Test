@@ -84,8 +84,8 @@ function showPost(post) {
       <br />
       <br />
     <form action="" method=dialog" id="delete-post">
-      <input type="button" id="btn-cancel" value="NO"/>
-      <button id="btn-yes">YES</button>
+      <input type="button" id="btn-no-update" value="CANCEL"/>
+      <button id="btn-yes-update">UPDATE</button>
     </form> 
     `;
     document.querySelector("#dialog-delete-post").showModal();
@@ -196,8 +196,8 @@ function createPostClicked() {
       <input type="url" id="postImage" name="postImage" />
       <br />
       <br />
-      <input type="submit" id="btn-submit" value="Post" />
       <button id="btn-back">Back</button>
+      <input type="submit" id="btn-submit" value="Post" />
     </form> 
     `);
   document.querySelector("#dialog-create-post").showModal();

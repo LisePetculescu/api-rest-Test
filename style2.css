@@ -1,0 +1,102 @@
+#posts-container,
+#users-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  column-gap: 1.2vw;
+  row-gap: 0.6vw;
+  margin: 2vw;
+  position: relative;
+}
+
+@media (min-width: 400px) {
+  #posts-container,
+  #users-container {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 650px) {
+  #posts-container,
+  #users-container {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+@media (min-width: 992px) {
+  #posts-container,
+  #users-container {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+}
+
+@media (min-width: 1300px) {
+  #posts-container,
+  #users-container {
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  }
+}
+
+#dialogPost {
+  z-index: 999;
+}
+
+.grid-item img {
+  width: 100%;
+  border-radius: 2vw;
+}
+.grid-item {
+  position: relative;
+  border-radius: 6px;
+  border: 3px rgba(127, 76, 32) solid;
+  padding: 2vw;
+  background-color: rgba(127, 76, 32, 0.695);
+  backdrop-filter: blur(2px);
+}
+
+header {
+  background-color: rgba(94, 57, 25, 0.796);
+  padding: 1vw;
+  text-align: center;
+}
+
+form {
+  display: table-caption;
+  margin-left: 2vw;
+}
+
+footer {
+  background-color: rgba(94, 57, 25, 0.903);
+  padding: 2vw;
+}
+
+body {
+  margin: 0vw;
+  background-color: #f3f3f3;
+  background-image: url("images/middle earth.jpg");
+}
+
+button,
+#btn-submit,
+#btn-cancel {
+  background-color: rgb(163, 97, 39);
+  border: 2px solid rgb(99, 59, 25);
+}
+
+#btn-yes,
+.btn-delete,
+#btn-back {
+  background-color: rgb(120, 69, 24);
+  border: 2px solid rgb(99, 59, 25);
+}
+
+dialog {
+  background-color: rgb(127, 76, 32);
+  backdrop-filter: blur(2px);
+  border: 2px solid rgb(87, 52, 21);
+}
+
+input {
+  background-color: rgb(142, 86, 37);
+  backdrop-filter: blur(2px);
+  border: 2px solid rgb(99, 59, 25);
+}
