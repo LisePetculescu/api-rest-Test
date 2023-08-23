@@ -256,7 +256,7 @@ async function createPost(image, title, uid, body) {
     updatePostGrid();
     document.querySelector("#dialog-create-post").close();
   } else {
-    console.log("oh no.. couldn't create a new post :(");
+    console.error("oh no.. couldn't create a new post :(");
   }
 }
 
